@@ -19,4 +19,5 @@ export interface BookingDetails {
   timeSlot: string;
   adultCount: number;
   childCount: number;
+  visitorName: string;
 }
