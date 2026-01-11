@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Calendar, Users, Clock, ArrowRight, CheckCircle2, Leaf, Info, Loader2 } from 'lucide-react';
+import { Calendar, Users, Clock, ArrowRight, CheckCircle2, Leaf, Info, Loader2, ExternalLink } from 'lucide-react';
 import { ATTRACTIONS, TIME_SLOTS, WHATSAPP_NUMBER, WEBHOOK_URL } from './constants';
 import { AttractionType, BookingDetails } from './types';
 import { getWildlifeFact } from './services/geminiService';
@@ -38,6 +38,13 @@ const App: React.FC = () => {
     fetchFact();
   }, [booking.attractionId]);
 
+  const handleAttractionClick = (attractionId: AttractionType, externalUrl?: string) => {
+    setBooking(prev => ({ ...prev, attractionId }));
+    if (externalUrl) {
+      window.open(externalUrl, '_blank');
+    }
+  };
+
   const handleBookingSubmit = async () => {
     setIsSubmitting(true);
     
@@ -55,8 +62,6 @@ const App: React.FC = () => {
 
     try {
       // POST to Google Sheets Webhook
-      // Note: use 'no-cors' if the script doesn't handle CORS, 
-      // though 'cors' is preferred if the script is set up for it.
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -69,7 +74,6 @@ const App: React.FC = () => {
       console.log('Booking logged to Google Sheets');
     } catch (error) {
       console.error('Error logging to Google Sheets:', error);
-      // We still proceed to WhatsApp even if logging fails
     }
 
     // Prepare WhatsApp Message
@@ -101,9 +105,9 @@ Please confirm availability. Thank you!`;
       {/* Header */}
       <header className="relative h-64 md:h-80 overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1544991277-226e6d782723?auto=format&fit=crop&q=80&w=1200" 
-          alt="Rainforest Canopy" 
-          className="w-full h-full object-cover brightness-50"
+          src="https://images.unsplash.com/photo-1541336032412-2048a678540d?auto=format&fit=crop&q=80&w=1200" 
+          alt="Sepilok Rainforest Canopy" 
+          className="w-full h-full object-cover brightness-[0.4]"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 text-center">
           <div className="flex items-center gap-2 mb-2">
@@ -132,23 +136,30 @@ Please confirm availability. Thank you!`;
                   <button
                     key={attraction.id}
                     disabled={isSubmitting}
-                    onClick={() => setBooking(prev => ({ ...prev, attractionId: attraction.id }))}
+                    onClick={() => handleAttractionClick(attraction.id, attraction.externalUrl)}
                     className={`group relative overflow-hidden rounded-xl transition-all duration-300 border-2 text-left disabled:opacity-50 ${
                       booking.attractionId === attraction.id 
                         ? 'border-emerald-500 ring-4 ring-emerald-50' 
                         : 'border-slate-100 hover:border-emerald-200'
                     }`}
                   >
-                    <div className="aspect-video overflow-hidden">
+                    <div className="aspect-video overflow-hidden relative">
                       <img 
                         src={attraction.image} 
                         alt={attraction.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
+                      {attraction.externalUrl && (
+                        <div className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-lg shadow-sm text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ExternalLink size={14} />
+                        </div>
+                      )}
                     </div>
                     <div className="p-4">
                       <div className="flex justify-between items-start mb-1">
-                        <h3 className="font-bold text-slate-800">{attraction.name}</h3>
+                        <h3 className="font-bold text-slate-800 flex items-center gap-1.5">
+                          {attraction.name}
+                        </h3>
                         {booking.attractionId === attraction.id && (
                           <CheckCircle2 className="text-emerald-500" size={18} />
                         )}

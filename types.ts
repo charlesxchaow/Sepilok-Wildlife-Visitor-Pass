@@ -6,6 +6,7 @@ export interface Attraction {
   name: string;
   description: string;
   image: string;
+  externalUrl?: string;
   prices: {
     adult: number;
     child: number;

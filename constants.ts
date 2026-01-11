@@ -7,6 +7,7 @@ export const ATTRACTIONS: Attraction[] = [
     name: 'Orangutan Sanctuary',
     description: 'Observe rescued orangutans in their natural habitat during feeding times.',
     image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?auto=format&fit=crop&q=80&w=800',
+    externalUrl: 'https://sabahtourism.com/destination/sepilok-orangutan-rehabilitation-centre/',
     prices: { adult: 30, child: 15 }
   },
   {
@@ -14,6 +15,7 @@ export const ATTRACTIONS: Attraction[] = [
     name: 'Sun Bear Centre',
     description: 'The world’s only sun bear conservation facility, home to the smallest bears.',
     image: 'https://images.unsplash.com/photo-1590273466070-40c466b4432d?auto=format&fit=crop&q=80&w=800',
+    externalUrl: 'https://www.bsbcc.org.my/',
     prices: { adult: 30, child: 15 }
   },
   {
@@ -21,6 +23,7 @@ export const ATTRACTIONS: Attraction[] = [
     name: 'Rainforest Combo',
     description: 'Full experience: Visit both the Orangutan Sanctuary and Sun Bear Centre.',
     image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800',
+    externalUrl: 'https://sabahtourism.com/destination/rainforest-discovery-centre-rdc/',
     prices: { adult: 50, child: 25 }
   }
 ];
